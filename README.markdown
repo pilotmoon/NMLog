@@ -2,7 +2,7 @@
 
 Simple, controllable logging for Objective-C.
 
-## Features
+Features:
 
 * Print message type (INFO, WARNING etc.) as part of message.
 * Print source file name as part of log message.
