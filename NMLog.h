@@ -42,18 +42,25 @@ void NMLogLog(NSString *levelName, NSInteger levelNumber, NSString *filePath, NS
 /*
  Macros for the predefined log levels.
  */
-#ifndef NMLOG_DISABLE
-#	define NMLogTiny(fmt, ...) NMLogLog(@"TINY", 3, @__FILE__, fmt, ##__VA_ARGS__)
-#	define NMLogFine(fmt, ...) NMLogLog(@"FINE", 2, @__FILE__, fmt, ##__VA_ARGS__)
-#	define NMLogInfo(fmt, ...) NMLogLog(@"INFO", 1, @__FILE__, fmt, ##__VA_ARGS__)
-#	define NMLogWarning(fmt, ...) NMLogLog(@"WARNING", 1, @__FILE__, fmt, ##__VA_ARGS__)
-#	define NMLogError(fmt, ...) NMLogLog(@"ERROR", 0, @__FILE__, fmt, ##__VA_ARGS__)
+#if defined(NMLOG_DISABLE_ALL)
+#	define NMLogImportant(fmt, ...)
+#	define NMLogError(fmt, ...)
 #else
+#	define NMLogImportant(fmt, ...) NMLogLog(@"INFO", 0, @__FILE__, fmt, ##__VA_ARGS__)
+#	define NMLogError(fmt, ...) NMLogLog(@"ERROR", 0, @__FILE__, fmt, ##__VA_ARGS__)
+#endif
+
+#if defined(NMLOG_DISABLE_INFO)||defined(NMLOG_DISABLE_ALL)
 #	define NMLogTiny(fmt, ...)
 #	define NMLogFine(fmt, ...)
 #	define NMLogInfo(fmt, ...)
 #	define NMLogWarning(fmt, ...)
-#	define NMLogError(fmt, ...)
+#else
+#	define NMLogTiny(fmt, ...) NMLogLog(@"TINY", 3, @__FILE__, fmt, ##__VA_ARGS__)
+#	define NMLogFine(fmt, ...) NMLogLog(@"FINE", 2, @__FILE__, fmt, ##__VA_ARGS__)
+#	define NMLogInfo(fmt, ...) NMLogLog(@"INFO", 1, @__FILE__, fmt, ##__VA_ARGS__)
+#	define NMLogWarning(fmt, ...) NMLogLog(@"WARNING", 1, @__FILE__, fmt, ##__VA_ARGS__)
 #endif
+
 
 
