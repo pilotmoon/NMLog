@@ -36,13 +36,10 @@ void NMLogLog(NSString *levelName, NSInteger levelNumber, NSString *filePath, NS
     
     // do specifiers match the filename?
     BOOL fileMatches=NO;
-    NSArray *specifiedNames=[[NSUserDefaults standardUserDefaults] objectForKey:kNMLogFiles];
-    if ([specifiedNames isKindOfClass:[NSArray class]]) {
-        for (NSString *const specifiedName in specifiedNames) {
-            if ([specifiedName isEqualToString:getFileNameOnce()]) {
-                fileMatches=YES;
-                break;
-            }
+    for (NSString *const specifiedName in [[NSUserDefaults standardUserDefaults] arrayForKey:kNMLogFiles]) {
+        if ([specifiedName isEqualToString:getFileNameOnce()]) {
+            fileMatches=YES;
+            break;
         }
     }
     
