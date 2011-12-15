@@ -43,18 +43,18 @@ void NMLogLog(NSString *levelName, NSInteger levelNumber, NSString *filePath, NS
  Macros for the predefined log levels.
  */
 #if defined(NMLOG_DISABLE_ALL)
-#	define NMLogImportant(fmt, ...)
-#	define NMLogError(fmt, ...)
+#	define NMLogImportant(...)
+#	define NMLogError(...)
 #else
 #	define NMLogImportant(fmt, ...) NMLogLog(@"INFO", 0, @__FILE__, fmt, ##__VA_ARGS__)
 #	define NMLogError(fmt, ...) NMLogLog(@"ERROR", 0, @__FILE__, fmt, ##__VA_ARGS__)
 #endif
 
 #if defined(NMLOG_DISABLE_INFO)||defined(NMLOG_DISABLE_ALL)
-#	define NMLogTiny(fmt, ...)
-#	define NMLogFine(fmt, ...)
-#	define NMLogInfo(fmt, ...)
-#	define NMLogWarning(fmt, ...)
+#	define NMLogTiny(...)
+#	define NMLogFine(...)
+#	define NMLogInfo(...)
+#	define NMLogWarning(...)
 #else
 #	define NMLogTiny(fmt, ...) NMLogLog(@"TINY", 3, @__FILE__, fmt, ##__VA_ARGS__)
 #	define NMLogFine(fmt, ...) NMLogLog(@"FINE", 2, @__FILE__, fmt, ##__VA_ARGS__)
