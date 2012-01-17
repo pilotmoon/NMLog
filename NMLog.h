@@ -55,11 +55,13 @@ void NMLogLog(NSString *levelName, NSInteger levelNumber, NSString *filePath, NS
 #	define NMLogFine(...)
 #	define NMLogInfo(...)
 #	define NMLogWarning(...)
+#	define NMLogTemp(...)
 #else
 #	define NMLogTiny(fmt, ...) NMLogLog(@"TINY", 3, @__FILE__, fmt, ##__VA_ARGS__)
 #	define NMLogFine(fmt, ...) NMLogLog(@"FINE", 2, @__FILE__, fmt, ##__VA_ARGS__)
 #	define NMLogInfo(fmt, ...) NMLogLog(@"INFO", 1, @__FILE__, fmt, ##__VA_ARGS__)
 #	define NMLogWarning(fmt, ...) NMLogLog(@"WARNING", 1, @__FILE__, fmt, ##__VA_ARGS__)
+#	define NMLogTemp(fmt, ...) NMLogLog(@"TEMP", 0, @__FILE__, fmt, ##__VA_ARGS__)
 #endif
 
 
