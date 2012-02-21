@@ -49,7 +49,6 @@ void NMLogLog(NSString *levelName, NSInteger levelNumber, NSString *filePath, NS
 		va_start(args, format);
 		NSString *str = [[NSString alloc] initWithFormat:format arguments:args];
 		NSLog(@"[%@] %@: %@", levelName, getFileNameOnce(), str);
-		[str release];
 		va_end(args);
 	}
 }
