@@ -34,10 +34,21 @@ extern NSString *const kNMLogLevel;
 extern NSString *const kNMLogFiles;
 
 /*
+ NSUSerDefaults key to control whether output is logged to a file on the desktop.
+ */
+extern NSString *const kNMLogToFile;
+
+/*
  This function performs the logging. Although you can call this directly, I recommend
  using one of the macros below.
  */
 void NMLogLog(NSString *levelName, NSInteger levelNumber, NSString *filePath, NSString *format, ...);
+
+/*
+ The current date and time as a string.
+ */
+NSString *NMLogDateTimeString(void);
+NSString *NMLogFineDateTimeString(void);
 
 /*
  Macros for the predefined log levels.

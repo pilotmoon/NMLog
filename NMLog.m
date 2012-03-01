@@ -21,6 +21,51 @@
 
 NSString *const kNMLogLevel=@"NMLogLevel";
 NSString *const kNMLogFiles=@"NMLogFiles";
+NSString *const kNMLogToFile=@"NMLogToFile";
+
+NSString *NMLogDateTimeString(void)
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd-HH-mm-ss"];
+    return [dateFormatter stringFromDate:[NSDate date]];
+}
+
+NSString *NMLogFineDateTimeString(void)
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
+    return [dateFormatter stringFromDate:[NSDate date]];
+}
+
+void NMLogToFile(NSString *string)
+{
+    static NSURL *file=nil;    
+    if (!file) {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDesktopDirectory,
+                                                             NSUserDomainMask, YES);
+        if ([paths count] > 0) {
+            NSString *basePath=[paths objectAtIndex:0];
+            NSString *productName=[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"];
+            NSString *isoDate=NMLogDateTimeString();
+            NSString *fileName=[NSString stringWithFormat:@"%@-Log-%@.txt", productName, isoDate];
+            file=[NSURL fileURLWithPathComponents:[NSArray arrayWithObjects:basePath, fileName, nil]];            
+        }
+    }
+    
+    if (file) {
+        NSError *error=nil;
+        
+        // find/create file
+        if (![[NSFileManager defaultManager] fileExistsAtPath:[file path]]) {
+            [@"" writeToURL:file atomically:NO encoding:NSUTF8StringEncoding error:&error];
+        }
+        
+        NSFileHandle *fileHandle = [NSFileHandle fileHandleForWritingToURL:file error:&error];
+        [fileHandle seekToEndOfFile];
+        [fileHandle writeData:[string dataUsingEncoding:NSUTF8StringEncoding]];
+    }
+}
+
 
 void NMLogLog(NSString *levelName, NSInteger levelNumber, NSString *filePath, NSString *format, ...)
 {
@@ -48,7 +93,11 @@ void NMLogLog(NSString *levelName, NSInteger levelNumber, NSString *filePath, NS
 		va_list args;
 		va_start(args, format);
 		NSString *str = [[NSString alloc] initWithFormat:format arguments:args];
-		NSLog(@"[%@] %@: %@", levelName, getFileNameOnce(), str);
+        NSString *fullLog = [NSString stringWithFormat:@"[%@] %@: %@", levelName, getFileNameOnce(), str];
+		NSLog(@"%@", fullLog);
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:kNMLogToFile]) {
+            NMLogToFile([NSString stringWithFormat:@"%@ %@\n", NMLogFineDateTimeString(), fullLog]);
+        }
 		va_end(args);
 	}
 }
