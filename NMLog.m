@@ -44,11 +44,11 @@ void NMLogToFile(NSString *string)
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDesktopDirectory,
                                                              NSUserDomainMask, YES);
         if ([paths count] > 0) {
-            NSString *basePath=[paths objectAtIndex:0];
+            NSString *basePath=paths[0];
             NSString *productName=[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"];
             NSString *isoDate=NMLogDateTimeString();
             NSString *fileName=[NSString stringWithFormat:@"%@-Log-%@.txt", productName, isoDate];
-            file=[NSURL fileURLWithPathComponents:[NSArray arrayWithObjects:basePath, fileName, nil]];            
+            file=[NSURL fileURLWithPathComponents:@[basePath, fileName]];            
         }
     }
     
@@ -76,7 +76,7 @@ void NMLogLog(NSString *levelName, NSInteger levelNumber, NSString *filePath, NS
     */
     __block NSString *fileName=nil;
     NSString *(^getFileNameOnce)(void)=^{
-        return fileName?fileName:(fileName=[[[filePath lastPathComponent] componentsSeparatedByString:@"."] objectAtIndex:0]);
+        return fileName?fileName:(fileName=[[filePath lastPathComponent] componentsSeparatedByString:@"."][0]);
     };
     
     // do specifiers match the filename?
